@@ -9,6 +9,20 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     images: { unoptimized: true },
+    experimental: {
+        serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
+    },
+    // Disable static optimization for pages that need database access
+    async headers() {
+        return [
+            {
+                source: '/api/(.*)',
+                headers: [
+                    { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+                ],
+            },
+        ];
+    },
 };
 
 module.exports = nextConfig;
